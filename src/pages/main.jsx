@@ -2,11 +2,17 @@ import { Tab } from "bootstrap";
 import { Tabs } from "react-bootstrap";
 import Reserves from "../containers/reserves";
 import Todolist from "../containers/todolist";
+import styled from "styled-components";
+
+const MainDisp = styled.main `
+width: 100%;
+background-color: lemonchiffon;
+`
 
 const Main = () => {
   return (
-    <main>
-      <div>
+    <MainDisp>
+      
         <Tabs defaultActiveKey="profile" id="zapasy" className="mb-3" fill>
           <Tab eventKey="Запасы" title="Запасы">
             <Reserves />
@@ -15,8 +21,8 @@ const Main = () => {
             <Todolist />
           </Tab>
         </Tabs>
-      </div>
-    </main>
+      
+    </MainDisp>
   );
 };
 export default Main;
