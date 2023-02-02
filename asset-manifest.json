@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/zapasy/static/css/main.00dc705d.css",
+    "main.js": "/zapasy/static/js/main.e07e0945.js",
+    "index.html": "/zapasy/index.html",
+    "main.00dc705d.css.map": "/zapasy/static/css/main.00dc705d.css.map",
+    "main.e07e0945.js.map": "/zapasy/static/js/main.e07e0945.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.00dc705d.css",
+    "static/js/main.e07e0945.js"
+  ]
+}
