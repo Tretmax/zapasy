@@ -1,9 +1,9 @@
-// import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+import reservReducer from './slice'
 
-// import { combineReducers } from '@reduxjs/toolkit';
 
-// const allReducers = combineReducers()
 
-// export const store = configureStore({
-//   allReducers
-// });
+export const store = configureStore({
+  reducer :{
+    reserve : reservReducer},
+});

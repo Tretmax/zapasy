@@ -1,7 +1,11 @@
 import { Button } from "bootstrap";
-import { data } from "../mocks/data";
+
 import styled from "styled-components";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addGroup, deleteGroup, deleteItem, setEditGroup, setEditItem, addItem,setActiveGroup } from "../redux/slice";
+import { store } from "../redux/store";
 
 const Wrap = styled.div`
   width: 96%;
@@ -48,31 +52,34 @@ const Reserves = () => {
   const [activeTarget, setActiveTarget] = useState(false);
   const buttonTarget = () => {
     setActiveTarget(!activeTarget);
+    
   };
-  
+  const data = useSelector(state=>state.reserve.data)
+  console.log(data)
+  const dispatch = useDispatch ()
   return (
     <Wrap>
       <ButtonPanel>
         <button onClick={buttonTarget}>Edit Target</button>
         <button>Edit Limits</button>
-        <button>Add Group</button>
+        <button onClick={()=>dispatch(addGroup('scssc'))}>Add Group</button>
       </ButtonPanel>
       {data.map((item) => {
         return (
           <div>
-            <Group>
+            <Group >
               <div> ! </div>
-              <h3>{item.group}</h3>
+              <h3 onClick={()=>dispatch(setActiveGroup(item.id))}>{item.groupName}</h3>
 
               {item.isRedactGroup ? (
                 <Buttons>
                   <button>Save</button>
-                  <button onClick={()=>{item.isRedactGroup = !item.isRedactGroup}}>Cancel</button>
+                  <button onClick={()=>dispatch(setEditGroup(item.id))}>Cancel</button>
                 </Buttons>
               ) : (
                 <Buttons>
-                  <button>Edit</button>
-                  <button>Del</button>
+                  <button onClick={()=>dispatch(setEditGroup(item.id))}>Edit</button>
+                  <button onClick={()=>dispatch(deleteGroup(item.id))}>Del</button>
                 </Buttons>
               )}
             </Group>
@@ -85,21 +92,27 @@ const Reserves = () => {
                       {activeTarget ? <p>{el.targetValue}</p> : ""}
                       <p>{`${el.value} ${el.etc}`}</p>
                       <Status />
-                      {el.isRedact ? (
+                      {el.isRedactItem ? (
                         <Buttons>
                           <button>Save</button>
-                          <button>Cancel</button>
+                          <button onClick={()=>dispatch(setEditItem({nameItem: el.name, groupId: item.id}))}>Cancel</button>
                         </Buttons>
                       ) : (
                         <Buttons>
-                          <button>Edit</button>
-                          <button>Del</button>
+                          <button onClick={()=>dispatch(setEditItem({nameItem: el.name, groupId: item.id}))}>Edit</button>
+                          <button onClick={()=>dispatch(deleteItem({nameItem: el.name, groupId: item.id}))}>Del</button>
                         </Buttons>
                       )}
                     </Item>
                   );
                 })}
-                <button>Add item</button>
+                <button onClick={()=> dispatch (addItem ({
+                  groupId: item.id,
+                  itemName : 'qwqw',
+                  targetValue: 2323, 
+                  etc: 'sdsd',
+                  value: 3243,
+                }))}>Add item</button>
               </div>
             ) : (
               <></>
