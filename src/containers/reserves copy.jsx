@@ -15,7 +15,6 @@ import {
   setNameGroup,
   setCurrentValue,
 } from "../redux/slice";
-import Group from "../components/Group";
 import { store } from "../redux/store";
 
 const Wrap = styled.div`
@@ -31,7 +30,14 @@ const Item = styled.div`
   transition: all 0.3s;
 `;
 
-
+const Group = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  border-radius: 50px;
+  background-color: lavender;
+`;
 const Buttons = styled.div`
   display: flex;
   width: 10%;
@@ -71,8 +77,49 @@ const Reserves = () => {
       {data.map((item) => {
         return (
           <div>
-            <Group groupData= {item}/>
-              
+            <Group>
+              <div> ! </div>
+              <h3 onClick={() => dispatch(setActiveGroup(item.id))}>
+                {item.isRedactGroup ? (
+                  <input
+                    type="text"
+                    placeholder={item.groupName}
+                    onChange={(e) => setInput(e.target.value)}
+                  />
+                ) : (
+                  item.groupName
+                )}
+              </h3>
+
+              {item.isRedactGroup ? (
+                <Buttons>
+                  <button
+                    onClick={() =>
+                      dispatch(
+                        setNameGroup({
+                          newName: handlerInput,
+                          groupId: item.id,
+                        })
+                      )
+                    }
+                  >
+                    Save
+                  </button>
+                  <button onClick={() => dispatch(setEditGroup(item.id))}>
+                    Cancel
+                  </button>
+                </Buttons>
+              ) : (
+                <Buttons>
+                  <button onClick={() => dispatch(setEditGroup(item.id))}>
+                    Edit
+                  </button>
+                  <button onClick={() => dispatch(deleteGroup(item.id))}>
+                    Del
+                  </button>
+                </Buttons>
+              )}
+            </Group>
             {item.isActive ? (
               <div>
                 {item.items.map((el) => {
