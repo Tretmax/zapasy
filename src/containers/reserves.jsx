@@ -4,38 +4,14 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {
-  addGroup,
-  deleteGroup,
-  deleteItem,
-  setEditGroup,
-  setEditItem,
-  addItem,
-  setActiveGroup,
-  setNameGroup,
-  setCurrentValue,
-} from "../redux/slice";
+import { addGroup, addItem } from "../redux/slice";
 import Group from "../components/Group";
-import { store } from "../redux/store";
+import Item from "../components/Item";
 
 const Wrap = styled.div`
   width: 96%;
   margin-left: 2%;
   margin-right: 2%;
-`;
-
-const Item = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-left: 2%;
-  transition: all 0.3s;
-`;
-
-
-const Buttons = styled.div`
-  display: flex;
-  width: 10%;
-  justify-content: space-evenly;
 `;
 
 const ButtonPanel = styled.div`
@@ -45,12 +21,6 @@ const ButtonPanel = styled.div`
   margin-bottom: 15px;
 `;
 
-const Status = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
-  background-color: red;
-`;
 
 const Reserves = () => {
   const [activeTarget, setActiveTarget] = useState(false);
@@ -58,8 +28,6 @@ const Reserves = () => {
     setActiveTarget(!activeTarget);
   };
   const data = useSelector((state) => state.reserve.data);
-  const [handlerInput, setInput] = useState("");
-  // console.log(handlerInput)
   const dispatch = useDispatch();
   return (
     <Wrap>
@@ -71,85 +39,17 @@ const Reserves = () => {
       {data.map((item) => {
         return (
           <div>
-            <Group groupData= {item}/>
-              
+            <Group groupData={item} />
+
             {item.isActive ? (
               <div>
                 {item.items.map((el) => {
                   return (
-                    <Item>
-                      <p>{el.name}</p>
-                      {activeTarget ? <p>{el.targetValue}</p> : ""}
-                      <p>
-                        {el.isRedactItem ? (
-                          <input
-                            type="text"
-                            placeholder={el.value}
-                            onChange={(e) => setInput(e.target.value)}
-                          />
-                        ) : (
-                          el.value
-                        )}{" "}
-                        {el.etc}
-                      </p>
-                      <Status />
-                      {el.isRedactItem ? (
-                        <Buttons>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                setCurrentValue({
-                                  newValue: handlerInput,
-                                  groupId: item.id,
-                                  nameItem: el.name,
-                                })
-                              )
-                            }
-                          >
-                            Save
-                          </button>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                setEditItem({
-                                  nameItem: el.name,
-                                  groupId: item.id,
-                                })
-                              )
-                            }
-                          >
-                            Cancel
-                          </button>
-                        </Buttons>
-                      ) : (
-                        <Buttons>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                setEditItem({
-                                  nameItem: el.name,
-                                  groupId: item.id,
-                                })
-                              )
-                            }
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                deleteItem({
-                                  nameItem: el.name,
-                                  groupId: item.id,
-                                })
-                              )
-                            }
-                          >
-                            Del
-                          </button>
-                        </Buttons>
-                      )}
-                    </Item>
+                    <Item
+                      itemData={el}
+                      groupId={item.id}
+                      activeTarget={activeTarget}
+                    />
                   );
                 })}
                 <button

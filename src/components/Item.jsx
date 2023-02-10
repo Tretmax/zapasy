@@ -2,47 +2,20 @@ import { Button } from "bootstrap";
 
 import styled from "styled-components";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {
-  addGroup,
-  deleteGroup,
-  deleteItem,
-  setEditGroup,
-  setEditItem,
-  addItem,
-  setActiveGroup,
-  setNameGroup,
-  setCurrentValue,
-} from "../redux/slice";
-import Group from "../components/Group";
-import { store } from "../redux/store";
+import { deleteItem, setEditItem, setCurrentValue } from "../redux/slice";
 
-const Wrap = styled.div`
-  width: 96%;
-  margin-left: 2%;
-  margin-right: 2%;
-`;
-
-const Item = styled.div`
+const ItemStyle = styled.div`
   display: flex;
   justify-content: space-between;
   margin-left: 2%;
   transition: all 0.3s;
 `;
 
-
 const Buttons = styled.div`
   display: flex;
   width: 10%;
   justify-content: space-evenly;
-`;
-
-const ButtonPanel = styled.div`
-  width: 20%;
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 15px;
 `;
 
 const Status = styled.div`
@@ -52,129 +25,84 @@ const Status = styled.div`
   background-color: red;
 `;
 
-const Reserves = () => {
-  const [activeTarget, setActiveTarget] = useState(false);
-  const buttonTarget = () => {
-    setActiveTarget(!activeTarget);
-  };
-  const data = useSelector((state) => state.reserve.data);
+const Item = ({ itemData, groupId, activeTarget }) => {
   const [handlerInput, setInput] = useState("");
-  // console.log(handlerInput)
   const dispatch = useDispatch();
   return (
-    <Wrap>
-      <ButtonPanel>
-        <button onClick={buttonTarget}>Edit Target</button>
-        <button>Edit Limits</button>
-        <button onClick={() => dispatch(addGroup("scssc"))}>Add Group</button>
-      </ButtonPanel>
-      {data.map((item) => {
-        return (
-          <div>
-            <Group groupData= {item}/>
-              
-            {item.isActive ? (
-              <div>
-                {item.items.map((el) => {
-                  return (
-                    <Item>
-                      <p>{el.name}</p>
-                      {activeTarget ? <p>{el.targetValue}</p> : ""}
-                      <p>
-                        {el.isRedactItem ? (
-                          <input
-                            type="text"
-                            placeholder={el.value}
-                            onChange={(e) => setInput(e.target.value)}
-                          />
-                        ) : (
-                          el.value
-                        )}{" "}
-                        {el.etc}
-                      </p>
-                      <Status />
-                      {el.isRedactItem ? (
-                        <Buttons>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                setCurrentValue({
-                                  newValue: handlerInput,
-                                  groupId: item.id,
-                                  nameItem: el.name,
-                                })
-                              )
-                            }
-                          >
-                            Save
-                          </button>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                setEditItem({
-                                  nameItem: el.name,
-                                  groupId: item.id,
-                                })
-                              )
-                            }
-                          >
-                            Cancel
-                          </button>
-                        </Buttons>
-                      ) : (
-                        <Buttons>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                setEditItem({
-                                  nameItem: el.name,
-                                  groupId: item.id,
-                                })
-                              )
-                            }
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                deleteItem({
-                                  nameItem: el.name,
-                                  groupId: item.id,
-                                })
-                              )
-                            }
-                          >
-                            Del
-                          </button>
-                        </Buttons>
-                      )}
-                    </Item>
-                  );
-                })}
-                <button
-                  onClick={() =>
-                    dispatch(
-                      addItem({
-                        groupId: item.id,
-                        itemName: "qwqw",
-                        targetValue: 2323,
-                        etc: "sdsd",
-                        value: 3243,
-                      })
-                    )
-                  }
-                >
-                  Add item
-                </button>
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
-        );
-      })}
-    </Wrap>
+    <ItemStyle>
+      <p>{itemData.name}</p>
+      {activeTarget ? <p>{itemData.targetValue}</p> : ""}
+      <p>
+        {itemData.isRedactItem ? (
+          <input
+            type="text"
+            placeholder={itemData.value}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        ) : (
+          itemData.value
+        )}{" "}
+        {itemData.etc}
+      </p>
+      <Status />
+      {itemData.isRedactItem ? (
+        <Buttons>
+          <button
+            onClick={() =>
+              dispatch(
+                setCurrentValue({
+                  newValue: handlerInput,
+                  groupId: groupId,
+                  nameItem: itemData.name,
+                })
+              )
+            }
+          >
+            Save
+          </button>
+          <button
+            onClick={() =>
+              dispatch(
+                setEditItem({
+                  nameItem: itemData.name,
+                  groupId: groupId,
+                })
+              )
+            }
+          >
+            Cancel
+          </button>
+        </Buttons>
+      ) : (
+        <Buttons>
+          <button
+            onClick={() =>
+              dispatch(
+                setEditItem({
+                  nameItem: itemData.name,
+                  groupId: groupId,
+                })
+              )
+            }
+          >
+            Edit
+          </button>
+          <button
+            onClick={() =>
+              dispatch(
+                deleteItem({
+                  nameItem: itemData.name,
+                  groupId: groupId,
+                })
+              )
+            }
+          >
+            Del
+          </button>
+        </Buttons>
+      )}
+    </ItemStyle>
   );
 };
-export default Reserves;
+
+export default Item;
