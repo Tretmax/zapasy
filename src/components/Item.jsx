@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteItem, setEditItem, setCurrentValue } from "../redux/slice";
+import { deleteItem, setCurrentValue, setTargetValue } from "../redux/slice";
 
 const ItemStyle = styled.div`
   display: flex;
@@ -28,15 +28,64 @@ const Status = styled.div`
 
 const Item = ({ itemData, groupId, activeTarget }) => {
   const [handlerInput, setInput] = useState("");
+  const [isTargetValueRedact, setTargetValueRedact] = useState(false);
+  const [isCurrentValueRedact, setCurrentValueRedact] = useState(false);
+
   const dispatch = useDispatch();
+
   return (
     <ItemStyle>
       <p>{itemData.name}</p>
-      {activeTarget ? <p>{itemData.targetValue}</p> : ""}
+      {activeTarget ? (
+        isTargetValueRedact ? (
+          <>
+            <Form.Control
+              type="number"
+              placeholder={itemData.targetValue}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <Button
+              variant="success"
+              onClick={() => {
+                dispatch(
+                  setTargetValue({
+                    newTargetValue: handlerInput,
+                    groupId: groupId,
+                    nameItem: itemData.name,
+                  })
+                );
+                setTargetValueRedact(false);
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => setTargetValueRedact(false)}
+            >
+              Cancel
+            </Button>
+          </>
+        ) : (
+          <>
+            {" "}
+            <p>{itemData.targetValue}</p>
+            <Button
+              variant="secondary"
+              onClick={() => setTargetValueRedact(true)}
+            >
+              Edit
+            </Button>
+          </>
+        )
+      ) : (
+        ""
+      )}
+
       <p>
-        {itemData.isRedactItem ? (
+        {isCurrentValueRedact ? (
           <Form.Control
-            type="text"
+            type="number"
             placeholder={itemData.value}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -46,49 +95,30 @@ const Item = ({ itemData, groupId, activeTarget }) => {
         {itemData.etc}
       </p>
       <Status />
-      {itemData.isRedactItem ? (
+      {isCurrentValueRedact ? (
         <Buttons>
           <Button
-            variant="success" 
-            onClick={() =>
+            variant="success"
+            onClick={() => {
               dispatch(
                 setCurrentValue({
                   newValue: handlerInput,
                   groupId: groupId,
                   nameItem: itemData.name,
                 })
-              )
-            }
+              );
+              setCurrentValueRedact(false);
+            }}
           >
             Save
           </Button>
-          <Button
-            variant="danger"
-            onClick={() =>
-              dispatch(
-                setEditItem({
-                  nameItem: itemData.name,
-                  groupId: groupId,
-                })
-              )
-            }
-          >
+          <Button variant="danger" onClick={() => setCurrentValueRedact(false)}>
             Cancel
           </Button>
         </Buttons>
       ) : (
         <Buttons>
-          <Button
-            variant="warning"
-            onClick={() =>
-              dispatch(
-                setEditItem({
-                  nameItem: itemData.name,
-                  groupId: groupId,
-                })
-              )
-            }
-          >
+          <Button variant="warning" onClick={() => setCurrentValueRedact(true)}>
             Edit
           </Button>
           <Button

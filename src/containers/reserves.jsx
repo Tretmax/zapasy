@@ -55,7 +55,6 @@ const Reserves = () => {
 
   const createItemForm = (groupId) => {
     const onSubmitItemForm = (data) => {
-      console.log(data);
       dispatch(
         addItem({
           groupId: groupId,
@@ -105,8 +104,10 @@ const Reserves = () => {
   return (
     <Wrap>
       <ButtonPanel>
-        <Button variant ="secondary" onClick={buttonTarget}>Edit Target</Button>
-        <Button variant ="secondary">Edit Limits</Button>
+        <Button variant="secondary" onClick={buttonTarget}>
+          Edit Target
+        </Button>
+        <Button variant="secondary">Edit Limits</Button>
         <ModalWindow
           modalTitle={"Створення групи"}
           nameModalButton={"Створити групу"}

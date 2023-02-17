@@ -17,7 +17,7 @@ const reservSlice = createSlice({
     },
 
     addItem(state, action) {
-      console.log(action)
+      console.log(action);
       const currentGroup = state.data.findIndex(
         (group) => group.id === action.payload.groupId
       );
@@ -26,7 +26,6 @@ const reservSlice = createSlice({
         targetValue: action.payload.targetValue,
         etc: action.payload.etc,
         value: action.payload.value,
-        isRedactItem: false,
       });
     },
 
@@ -35,21 +34,23 @@ const reservSlice = createSlice({
       state.data[target].isActive = !state.data[target].isActive;
     },
 
-      setNameGroup(state, action) {
-      const target = state.data.findIndex((item) => item.id === action.payload.groupId);
+    setNameGroup(state, action) {
+      const target = state.data.findIndex(
+        (item) => item.id === action.payload.groupId
+      );
       state.data[target].groupName = action.payload.newName;
       state.data[target].isRedactGroup = !state.data[target].isRedactGroup;
-      
-
     },
 
-    setEditItem(state, action) {
+    setTargetValue(state, action) {
       const currentGroup = state.data.findIndex(
         (group) => group.id === action.payload.groupId
       );
       const currentItem = state.data[currentGroup].items.findIndex(
         (item) => item.name === action.payload.nameItem
       );
+      state.data[currentGroup].items[currentItem].targetValue =
+        action.payload.newTargetValue;
       state.data[currentGroup].items[currentItem].isRedactItem =
         !state.data[currentGroup].items[currentItem].isRedactItem;
     },
@@ -60,10 +61,10 @@ const reservSlice = createSlice({
       const currentItem = state.data[currentGroup].items.findIndex(
         (item) => item.name === action.payload.nameItem
       );
-      state.data[currentGroup].items[currentItem].value =action.payload.newValue;
+      state.data[currentGroup].items[currentItem].value =
+        action.payload.newValue;
       state.data[currentGroup].items[currentItem].isRedactItem =
         !state.data[currentGroup].items[currentItem].isRedactItem;
-        
     },
     deleteGroup(state, action) {
       const target = state.data.findIndex((item) => item.id === action.payload);
@@ -86,9 +87,9 @@ export const {
   addItem,
   deleteGroup,
   deleteItem,
-  setEditItem,
   setActiveGroup,
   setNameGroup,
-  setCurrentValue
+  setCurrentValue,
+  setTargetValue,
 } = reservSlice.actions;
 export default reservSlice.reducer;
