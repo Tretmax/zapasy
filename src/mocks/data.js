@@ -3,7 +3,6 @@ export const data = [
     id: 1,
     groupName: "zamorozka",
     isActive: true,
-    isRedactGroup: false,
     items: [
       { name: "apple", targetValue: "100", etc: 'kg', value: "100", },
       { name: "kivi", targetValue: "100", etc: 'kg',  value: "1", isRedactItem: false },
@@ -14,7 +13,6 @@ export const data = [
     id: 2,
     groupName: "sfsdfzamorozka",
     isActive: true,
-    isRedactGroup: false,
     items: [
       { name: "apple", targetValue: "100", value: "100 kg", isRedactItem: false },
       { name: "kivi", targetValue: "100", value: "1 kg", isRedactItem: false },

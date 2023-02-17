@@ -1,4 +1,5 @@
-import { Button } from "bootstrap";
+import { Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 import styled from "styled-components";
 import { useState } from "react";
@@ -34,7 +35,7 @@ const Item = ({ itemData, groupId, activeTarget }) => {
       {activeTarget ? <p>{itemData.targetValue}</p> : ""}
       <p>
         {itemData.isRedactItem ? (
-          <input
+          <Form.Control
             type="text"
             placeholder={itemData.value}
             onChange={(e) => setInput(e.target.value)}
@@ -47,7 +48,8 @@ const Item = ({ itemData, groupId, activeTarget }) => {
       <Status />
       {itemData.isRedactItem ? (
         <Buttons>
-          <button
+          <Button
+            variant="success" 
             onClick={() =>
               dispatch(
                 setCurrentValue({
@@ -59,8 +61,9 @@ const Item = ({ itemData, groupId, activeTarget }) => {
             }
           >
             Save
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="danger"
             onClick={() =>
               dispatch(
                 setEditItem({
@@ -71,11 +74,12 @@ const Item = ({ itemData, groupId, activeTarget }) => {
             }
           >
             Cancel
-          </button>
+          </Button>
         </Buttons>
       ) : (
         <Buttons>
-          <button
+          <Button
+            variant="warning"
             onClick={() =>
               dispatch(
                 setEditItem({
@@ -86,8 +90,9 @@ const Item = ({ itemData, groupId, activeTarget }) => {
             }
           >
             Edit
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="danger"
             onClick={() =>
               dispatch(
                 deleteItem({
@@ -98,7 +103,7 @@ const Item = ({ itemData, groupId, activeTarget }) => {
             }
           >
             Del
-          </button>
+          </Button>
         </Buttons>
       )}
     </ItemStyle>

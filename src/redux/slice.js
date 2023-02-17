@@ -12,12 +12,12 @@ const reservSlice = createSlice({
         id: Math.floor(Math.random() * 100000),
         groupName: action.payload,
         isActive: true,
-        isRedactGroup: false,
         items: [],
       });
     },
 
     addItem(state, action) {
+      console.log(action)
       const currentGroup = state.data.findIndex(
         (group) => group.id === action.payload.groupId
       );
@@ -35,11 +35,7 @@ const reservSlice = createSlice({
       state.data[target].isActive = !state.data[target].isActive;
     },
 
-    setEditGroup(state, action) {
-      const target = state.data.findIndex((item) => item.id === action.payload);
-      state.data[target].isRedactGroup = !state.data[target].isRedactGroup;
-    },
-    setNameGroup(state, action) {
+      setNameGroup(state, action) {
       const target = state.data.findIndex((item) => item.id === action.payload.groupId);
       state.data[target].groupName = action.payload.newName;
       state.data[target].isRedactGroup = !state.data[target].isRedactGroup;
@@ -88,7 +84,6 @@ const reservSlice = createSlice({
 export const {
   addGroup,
   addItem,
-  setEditGroup,
   deleteGroup,
   deleteItem,
   setEditItem,

@@ -1,11 +1,11 @@
-import { Button } from "bootstrap";
+import { Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   deleteGroup,
-  setEditGroup,
   setActiveGroup,
   setNameGroup,
 } from "../redux/slice";
@@ -26,15 +26,16 @@ const Buttons = styled.div`
 
 
 const Group = ({groupData}) => {
-  console.log(groupData)
   const [handlerInput, setInput] = useState("");
   const dispatch = useDispatch();
+  const [isRedactGroup,setIsRedactGroup]=useState(false)
+  
   return (
     <GroupStyle>
-      <div> ! </div>
-      <h3 onClick={() => dispatch(setActiveGroup(groupData.id))}>
-        {groupData.isRedactGroup ? (
-          <input
+      <div onClick={() => dispatch(setActiveGroup(groupData.id))}> ! </div>
+      <h3 >
+        {isRedactGroup ? (
+          <Form.Control
             type="text"
             placeholder={groupData.groupName}
             onChange={(e) => setInput(e.target.value)}
@@ -44,28 +45,36 @@ const Group = ({groupData}) => {
         )}
       </h3>
 
-      {groupData.isRedactGroup ? (
+      {isRedactGroup ? (
         <Buttons>
-          <button
+          <Button
+          variant="success"
             onClick={() =>
-              dispatch(
+             ( dispatch(
                 setNameGroup({
                   newName: handlerInput,
                   groupId: groupData.id,
                 })
-              )
+              ), 
+              setIsRedactGroup(!isRedactGroup))
             }
           >
             Save
-          </button>
-          <button onClick={() => dispatch(setEditGroup(groupData.id))}>
+          </Button>
+          <Button 
+          variant="danger"
+          onClick={() => setIsRedactGroup(!isRedactGroup)}>
             Cancel
-          </button>
+          </Button>
         </Buttons>
       ) : (
         <Buttons>
-          <button onClick={() => dispatch(setEditGroup(groupData.id))}>Edit</button>
-          <button onClick={() => dispatch(deleteGroup(groupData.id))}>Del</button>
+          <Button 
+          variant="warning"
+          onClick={() => setIsRedactGroup(!isRedactGroup)}>Edit</Button>
+          <Button 
+          variant="danger"
+          onClick={() => dispatch(deleteGroup(groupData.id))}>Del</Button>
         </Buttons>
       )}
     </GroupStyle>
