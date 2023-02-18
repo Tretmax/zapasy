@@ -48,7 +48,7 @@ const Reserves = () => {
         />
       </Form.Group>
       <Button variant="primary" type="submit">
-        Submit
+      Створити
       </Button>
     </Form>
   );
@@ -95,7 +95,7 @@ const Reserves = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Submit
+          Створити
         </Button>
       </Form>
     );

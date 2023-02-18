@@ -23,7 +23,8 @@ const Status = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 100%;
-  background-color: red;
+  background-color: ${(props) =>
+    props.level < 50 ? "red" : props.level < 75 ? "yellow" : "green"};
 `;
 
 const Item = ({ itemData, groupId, activeTarget }) => {
@@ -32,6 +33,7 @@ const Item = ({ itemData, groupId, activeTarget }) => {
   const [isCurrentValueRedact, setCurrentValueRedact] = useState(false);
 
   const dispatch = useDispatch();
+  const level = Math.floor((itemData.value / itemData.targetValue) * 100);
 
   return (
     <ItemStyle>
@@ -94,7 +96,7 @@ const Item = ({ itemData, groupId, activeTarget }) => {
         )}{" "}
         {itemData.etc}
       </p>
-      <Status />
+      <Status level={level}>{level}% </Status>
       {isCurrentValueRedact ? (
         <Buttons>
           <Button
