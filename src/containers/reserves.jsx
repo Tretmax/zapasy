@@ -4,12 +4,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addGroup, addItem } from "../redux/slice";
+import { addGroup, addItem } from "../redux/sliceReserves";
 import Group from "../components/Group";
 import Item from "../components/Item";
 import ModalWindow from "../components/modal";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { addbBuyList } from "../redux/sliceTodo";
 
 const Wrap = styled.div`
   width: 96%;
@@ -37,6 +38,24 @@ const Reserves = () => {
     dispatch(addGroup(data.groupName));
     reset();
   };
+  const createBuyingList = (data) => {
+    const limit = 80;
+    const buyingList = [];
+    data.forEach((group) => {
+      group.items.forEach((item) => {
+        if (item.value / item.targetValue < limit / 100) {
+          buyingList.push({
+            groupid: group.id,
+            name: item.name,
+            value: item.targetValue - item.value,
+            etc: item.etc,
+            isCheck: false,
+          });
+        }
+      });
+    });
+    return buyingList
+  };
 
   const createGroupForm = (
     <Form onSubmit={handleSubmit(onSubmitGroupForm)}>
@@ -48,7 +67,7 @@ const Reserves = () => {
         />
       </Form.Group>
       <Button variant="primary" type="submit">
-      Створити
+        Створити
       </Button>
     </Form>
   );
@@ -114,6 +133,15 @@ const Reserves = () => {
           content={createGroupForm}
           modalShow={""}
         />
+        <Button
+          variant="secondary"
+          onClick={() => {
+            dispatch(addbBuyList(createBuyingList(data)));
+          }
+        }
+        >
+          За покупуами!
+        </Button>
       </ButtonPanel>
       {data.map((item) => {
         return (

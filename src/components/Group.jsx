@@ -8,7 +8,7 @@ import {
   deleteGroup,
   setActiveGroup,
   setNameGroup,
-} from "../redux/slice";
+} from "../redux/sliceReserves";
 
 const GroupStyle = styled.div`
   margin-top: 20px;

@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteItem, setCurrentValue, setTargetValue } from "../redux/slice";
+import { deleteItem, setCurrentValue, setTargetValue } from "../redux/sliceReserves";
 
 const ItemStyle = styled.div`
   display: flex;
