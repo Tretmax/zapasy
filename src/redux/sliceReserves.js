@@ -22,6 +22,7 @@ const reservSlice = createSlice({
         (group) => group.id === action.payload.groupId
       );
       state.data[currentGroup].items.push({
+        id: Math.floor(Math.random() * 10000000),
         name: action.payload.itemName,
         targetValue: action.payload.targetValue,
         etc: action.payload.etc,
@@ -47,7 +48,7 @@ const reservSlice = createSlice({
         (group) => group.id === action.payload.groupId
       );
       const currentItem = state.data[currentGroup].items.findIndex(
-        (item) => item.name === action.payload.nameItem
+        (item) => item.id === action.payload.itemId
       );
       state.data[currentGroup].items[currentItem].targetValue =
         action.payload.newTargetValue;
@@ -59,7 +60,7 @@ const reservSlice = createSlice({
         (group) => group.id === action.payload.groupId
       );
       const currentItem = state.data[currentGroup].items.findIndex(
-        (item) => item.name === action.payload.nameItem
+        (item) => item.id === action.payload.itemId
       );
       state.data[currentGroup].items[currentItem].value =
         action.payload.newValue;
@@ -67,7 +68,7 @@ const reservSlice = createSlice({
         !state.data[currentGroup].items[currentItem].isRedactItem;
     },
     deleteGroup(state, action) {
-      const target = state.data.findIndex((item) => item.id === action.payload);
+      const target = state.data.findIndex((group) => group.id === action.payload);
       state.data.splice(target, 1);
     },
     deleteItem(state, action) {
@@ -75,9 +76,12 @@ const reservSlice = createSlice({
         (group) => group.id === action.payload.groupId
       );
       const currentItem = state.data[currentGroup].items.findIndex(
-        (item) => item.name === action.payload.nameItem
+        (item) => item.id === action.payload.itemId
       );
       state.data[currentGroup].items.splice(currentItem, 1);
+    },
+    finishBuy(state, action) {
+      console.log(action.payload);
     },
   },
 });
@@ -91,5 +95,6 @@ export const {
   setNameGroup,
   setCurrentValue,
   setTargetValue,
+  finishBuy
 } = reservSlice.actions;
 export default reservSlice.reducer;

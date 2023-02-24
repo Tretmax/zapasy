@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { doCheck } from "../redux/sliceTodo";
+import { Button } from "react-bootstrap";
+import FinishBuyList from "../components/finishBuyList";
+import ModalWindow from "../components/modal";
+
 
 const Todos = styled.div`
   display: flex;
@@ -11,6 +15,7 @@ const Todos = styled.div`
 const Todolist = () => {
   const buyingList = useSelector((state) => state.todo.data);
   const dispatch = useDispatch();
+  
 
   return (
     <div>
@@ -21,15 +26,22 @@ const Todolist = () => {
               type="checkbox"
               checked={item.isCheck}
               onChange={() => {
-                dispatch(doCheck({ groupId: item.groupId, name: item.name }));
+                dispatch(doCheck({ groupId: item.groupId, itemId: item.itemId }));
               }}
             />
-            <p>{item.name}</p>
-            <p>{item.value}</p>
-            <p>{item.etc}</p>
+            <p>
+              {item.name} {item.value} {item.etc}
+            </p>
+           
           </Todos>
+          
         );
       })}
+       <ModalWindow
+              modalTitle={"Завершити покупки"}
+              nameModalButton={"Завершити покупки"}
+              content={FinishBuyList(buyingList)}
+            />
     </div>
   );
 };

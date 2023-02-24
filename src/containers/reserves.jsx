@@ -10,7 +10,7 @@ import Item from "../components/Item";
 import ModalWindow from "../components/modal";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { addbBuyList } from "../redux/sliceTodo";
+import { addBuyList } from "../redux/sliceTodo";
 
 const Wrap = styled.div`
   width: 96%;
@@ -39,13 +39,14 @@ const Reserves = () => {
     reset();
   };
   const createBuyingList = (data) => {
-    const limit = 80;
+    const limit = 50;
     const buyingList = [];
     data.forEach((group) => {
       group.items.forEach((item) => {
         if (item.value / item.targetValue < limit / 100) {
           buyingList.push({
-            groupid: group.id,
+            groupId: group.id,
+            itemId: item.id,
             name: item.name,
             value: item.targetValue - item.value,
             etc: item.etc,
@@ -54,7 +55,7 @@ const Reserves = () => {
         }
       });
     });
-    return buyingList
+    return buyingList;
   };
 
   const createGroupForm = (
@@ -136,9 +137,8 @@ const Reserves = () => {
         <Button
           variant="secondary"
           onClick={() => {
-            dispatch(addbBuyList(createBuyingList(data)));
-          }
-        }
+            dispatch(addBuyList(createBuyingList(data)));
+          }}
         >
           За покупуами!
         </Button>

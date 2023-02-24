@@ -7,14 +7,14 @@ const todoSlice = createSlice({
     data: todo,
   },
   reducers: {
-    addbBuyList(state, action) {
+    addBuyList(state, action) {
       state.data = action.payload;
     },
     doCheck(state, action) {
       const target = state.data.findIndex(
         (item) =>
-          item.id === action.payload.groupId &&
-          item.name === action.payload.name
+          item.groupId === action.payload.groupId &&
+          item.itemId === action.payload.itemId
       );
       state.data[target].isCheck = !state.data[target].isCheck;
       state.data.sort((a, b) => {
@@ -27,8 +27,10 @@ const todoSlice = createSlice({
         return 0;
       });
     },
+
+    
   },
 });
 
-export const { addbBuyList, doCheck } = todoSlice.actions;
+export const { addBuyList, doCheck } = todoSlice.actions;
 export default todoSlice.reducer;

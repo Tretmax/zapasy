@@ -53,7 +53,7 @@ const Item = ({ itemData, groupId, activeTarget }) => {
                   setTargetValue({
                     newTargetValue: handlerInput,
                     groupId: groupId,
-                    nameItem: itemData.name,
+                    itemId: itemData.id,
                   })
                 );
                 setTargetValueRedact(false);
@@ -106,7 +106,7 @@ const Item = ({ itemData, groupId, activeTarget }) => {
                 setCurrentValue({
                   newValue: handlerInput,
                   groupId: groupId,
-                  nameItem: itemData.name,
+                  itemId: itemData.id,
                 })
               );
               setCurrentValueRedact(false);
@@ -128,7 +128,7 @@ const Item = ({ itemData, groupId, activeTarget }) => {
             onClick={() =>
               dispatch(
                 deleteItem({
-                  nameItem: itemData.name,
+                  itemId: itemData.id,
                   groupId: groupId,
                 })
               )
