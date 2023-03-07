@@ -3,10 +3,11 @@ import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Button } from "react-bootstrap";
 import { finishBuy } from "../redux/sliceReserves";
+import { useSelector } from "react-redux";
 
-const FinishBuyList = (buyingList) => {
+const FinishBuyList = () => {
   const dispatch = useDispatch();
-
+  const buyingList = useSelector((state) => state.todo.data);
   const { register, handleSubmit, reset } = useForm();
   const onSubmitFinishBuyForm = (data) => {
     dispatch(finishBuy(data));
@@ -17,17 +18,20 @@ const FinishBuyList = (buyingList) => {
     <div>
       <Form onSubmit={handleSubmit(onSubmitFinishBuyForm)}>
         {buyingList.map((item) => {
-          return (
-            <>
-              <Form.Label className="mt-3">{item.name}</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder={item.groupName}
-                {...register(`${item.itemId}`)}
-              />
-              <p>{item.etc}</p>
-            </>
-          );
+          if (item.isCheck) {
+            return (
+              <>
+                <Form.Label className="mt-3">{item.name}</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder={item.groupName}
+                  {...register(`${item.itemId}`)}
+                  required
+                />
+                <p>{item.etc}</p>
+              </>
+            );
+          }
         })}
         <Button variant="primary" type="submit">
           Завершити покупки

@@ -13,11 +13,11 @@ const Main = () => {
   return (
     <MainDisp>
       
-        <Tabs defaultActiveKey="profile" id="zapasy" className="mb-3" fill>
-          <Tab eventKey="Запасы" title="Запасы">
+        <Tabs defaultActiveKey="zapasy" id="zapasy" className="mb-3" fill >
+          <Tab eventKey="zapasy" title="Запасы">
             <Reserves />
           </Tab>
-          <Tab eventKey="Список покупок" title="Список покупок">
+          <Tab eventKey="payList" title="Список покупок">
             <Todolist />
           </Tab>
         </Tabs>

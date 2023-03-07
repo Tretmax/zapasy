@@ -16,10 +16,11 @@ const Wrap = styled.div`
   width: 96%;
   margin-left: 2%;
   margin-right: 2%;
+  transition: all 0.3s;
 `;
 
 const ButtonPanel = styled.div`
-  width: 20%;
+  width: 30%;
   display: flex;
   justify-content: space-around;
   margin-bottom: 15px;
@@ -36,6 +37,8 @@ const Reserves = () => {
   const { register, handleSubmit, reset } = useForm();
   const onSubmitGroupForm = (data) => {
     dispatch(addGroup(data.groupName));
+    function a (){this.toggleClose()};
+    a();
     reset();
   };
   const createBuyingList = (data) => {
@@ -64,6 +67,7 @@ const Reserves = () => {
         <Form.Control
           type="text"
           placeholder="Введіть назву групи"
+          required
           {...register("groupName")}
         />
       </Form.Group>
@@ -93,24 +97,28 @@ const Reserves = () => {
           <Form.Control
             type="text"
             placeholder="Введіть назву позиції"
+            required
             {...register("itemName")}
           />
           <Form.Label className="mt-3">Одиниці виміру</Form.Label>
           <Form.Control
             type="text"
             placeholder="Введіть одиниці виміру"
+            required
             {...register("etc")}
           />
           <Form.Label className="mt-3">Цільове значення</Form.Label>
           <Form.Control
             type="number"
             placeholder="Введіть цільове значення"
+            required
             {...register("targetValue")}
           />
           <Form.Label className="mt-3">Поточне значення</Form.Label>
           <Form.Control
             type="number"
             placeholder="Введіть поточне значення"
+            required
             {...register("currentValue")}
           />
         </Form.Group>
@@ -125,17 +133,15 @@ const Reserves = () => {
     <Wrap>
       <ButtonPanel>
         <Button variant="secondary" onClick={buttonTarget}>
-          Edit Target
+          Змінити цільове значення
         </Button>
-        <Button variant="secondary">Edit Limits</Button>
         <ModalWindow
           modalTitle={"Створення групи"}
           nameModalButton={"Створити групу"}
           content={createGroupForm}
-          modalShow={""}
         />
         <Button
-          variant="secondary"
+          variant="danger"
           onClick={() => {
             dispatch(addBuyList(createBuyingList(data)));
           }}
@@ -145,7 +151,7 @@ const Reserves = () => {
       </ButtonPanel>
       {data.map((item) => {
         return (
-          <div>
+          <div  key={item.id}>
             <Group groupData={item} />
 
             {item.isActive ? (
@@ -153,6 +159,7 @@ const Reserves = () => {
                 {item.items.map((el) => {
                   return (
                     <Item
+                      key={el.id}
                       itemData={el}
                       groupId={item.id}
                       activeTarget={activeTarget}
@@ -163,7 +170,6 @@ const Reserves = () => {
                   modalTitle={"Створення позиції"}
                   nameModalButton={"Створити позицію"}
                   content={createItemForm(item.id)}
-                  modalShow={""}
                   groupId={item.id}
                 />
               </div>

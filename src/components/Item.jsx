@@ -1,10 +1,14 @@
-import { Button } from "react-bootstrap";
+import { Button, InputGroup } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteItem, setCurrentValue, setTargetValue } from "../redux/sliceReserves";
+import {
+  deleteItem,
+  setCurrentValue,
+  setTargetValue,
+} from "../redux/sliceReserves";
 
 const ItemStyle = styled.div`
   display: flex;
@@ -41,32 +45,36 @@ const Item = ({ itemData, groupId, activeTarget }) => {
       {activeTarget ? (
         isTargetValueRedact ? (
           <>
-            <Form.Control
-              type="number"
-              placeholder={itemData.targetValue}
-              onChange={(e) => setInput(e.target.value)}
-            />
-            <Button
-              variant="success"
-              onClick={() => {
-                dispatch(
-                  setTargetValue({
-                    newTargetValue: handlerInput,
-                    groupId: groupId,
-                    itemId: itemData.id,
-                  })
-                );
-                setTargetValueRedact(false);
-              }}
-            >
-              Save
-            </Button>
-            <Button
-              variant="danger"
-              onClick={() => setTargetValueRedact(false)}
-            >
-              Cancel
-            </Button>
+            <InputGroup className="mb-3">
+              <Form.Control
+                type="number"
+                defaultValue={itemData.targetValue}
+                placeholder="Введіть цільове значення"
+                onChange={(e) => setInput(e.target.value)}
+                required
+              />
+              <Button
+                variant="outline-success"
+                onClick={() => {
+                  dispatch(
+                    setTargetValue({
+                      newTargetValue: handlerInput,
+                      groupId: groupId,
+                      itemId: itemData.id,
+                    })
+                  );
+                  setTargetValueRedact(false);
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                variant="outline-danger"
+                onClick={() => setTargetValueRedact(false)}
+              >
+                Cancel
+              </Button>
+            </InputGroup>
           </>
         ) : (
           <>
@@ -86,11 +94,36 @@ const Item = ({ itemData, groupId, activeTarget }) => {
 
       <p>
         {isCurrentValueRedact ? (
-          <Form.Control
-            type="number"
-            placeholder={itemData.value}
-            onChange={(e) => setInput(e.target.value)}
-          />
+          <InputGroup className="mb-3">
+            <Form.Control
+              type="number"
+              defaultValue={itemData.value}
+              placeholder="Введіть поточне значення"
+              onChange={(e) => setInput(e.target.value)}
+              required
+            />
+            <Button
+              variant="outline-success"
+              onClick={() => {
+                dispatch(
+                  setCurrentValue({
+                    newValue: handlerInput,
+                    groupId: groupId,
+                    itemId: itemData.id,
+                  })
+                );
+                setCurrentValueRedact(false);
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              variant="outline-danger"
+              onClick={() => setCurrentValueRedact(false)}
+            >
+              Cancel
+            </Button>
+          </InputGroup>
         ) : (
           itemData.value
         )}{" "}
@@ -98,26 +131,7 @@ const Item = ({ itemData, groupId, activeTarget }) => {
       </p>
       <Status level={level}>{level}% </Status>
       {isCurrentValueRedact ? (
-        <Buttons>
-          <Button
-            variant="success"
-            onClick={() => {
-              dispatch(
-                setCurrentValue({
-                  newValue: handlerInput,
-                  groupId: groupId,
-                  itemId: itemData.id,
-                })
-              );
-              setCurrentValueRedact(false);
-            }}
-          >
-            Save
-          </Button>
-          <Button variant="danger" onClick={() => setCurrentValueRedact(false)}>
-            Cancel
-          </Button>
-        </Buttons>
+        ''
       ) : (
         <Buttons>
           <Button variant="warning" onClick={() => setCurrentValueRedact(true)}>

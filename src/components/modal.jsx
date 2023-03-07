@@ -4,6 +4,7 @@ import { useState } from "react";
 
 function ModalWindow(props) {
   const [modalShow, setModalShow] = useState(false);
+ const toggleClose = ()=>setModalShow(false)
   return (
     <>
       <Button variant="primary" onClick={() => setModalShow(!modalShow)}>
@@ -21,9 +22,9 @@ function ModalWindow(props) {
             {props.modalTitle}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          {props.content}
-        </Modal.Body>
+        <Modal.Body >{props.content}</Modal.Body>
+        
+        
       </Modal>
     </>
   );

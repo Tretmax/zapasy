@@ -68,7 +68,9 @@ const reservSlice = createSlice({
         !state.data[currentGroup].items[currentItem].isRedactItem;
     },
     deleteGroup(state, action) {
-      const target = state.data.findIndex((group) => group.id === action.payload);
+      const target = state.data.findIndex(
+        (group) => group.id === action.payload
+      );
       state.data.splice(target, 1);
     },
     deleteItem(state, action) {
@@ -81,7 +83,15 @@ const reservSlice = createSlice({
       state.data[currentGroup].items.splice(currentItem, 1);
     },
     finishBuy(state, action) {
-      console.log(action.payload);
+      Object.keys(action.payload).forEach((key) => {
+        state.data.forEach((group) => {
+          group.items.map((item) => {
+            if (item.id === +key) {
+              item.value = item.value + action.payload[key];
+            }
+          });
+        });
+      });
     },
   },
 });
@@ -95,6 +105,6 @@ export const {
   setNameGroup,
   setCurrentValue,
   setTargetValue,
-  finishBuy
+  finishBuy,
 } = reservSlice.actions;
 export default reservSlice.reducer;
