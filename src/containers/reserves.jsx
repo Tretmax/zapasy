@@ -22,7 +22,6 @@ const Wrap = styled.div`
 const ButtonPanel = styled.div`
   width: 30%;
   display: flex;
-  justify-content: space-around;
   margin-bottom: 15px;
 `;
 
@@ -37,8 +36,6 @@ const Reserves = () => {
   const { register, handleSubmit, reset } = useForm();
   const onSubmitGroupForm = (data) => {
     dispatch(addGroup(data.groupName));
-    function a (){this.toggleClose()};
-    a();
     reset();
   };
   const createBuyingList = (data) => {
@@ -132,7 +129,7 @@ const Reserves = () => {
   return (
     <Wrap>
       <ButtonPanel>
-        <Button variant="secondary" onClick={buttonTarget}>
+        <Button variant="secondary" onClick={buttonTarget} className="me-2">
           Змінити цільове значення
         </Button>
         <ModalWindow
@@ -141,6 +138,7 @@ const Reserves = () => {
           content={createGroupForm}
         />
         <Button
+          className="ms-2"
           variant="danger"
           onClick={() => {
             dispatch(addBuyList(createBuyingList(data)));
@@ -151,7 +149,7 @@ const Reserves = () => {
       </ButtonPanel>
       {data.map((item) => {
         return (
-          <div  key={item.id}>
+          <div key={item.id}>
             <Group groupData={item} />
 
             {item.isActive ? (

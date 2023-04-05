@@ -13,18 +13,24 @@ import {
 
 const GroupStyle = styled.div`
   margin-top: 20px;
+  padding-left: 2%;
+  padding-right: 2%;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
   border: 1px solid black;
   border-radius: 10px;
   background-color: lavender;
   transition: all 0.3s;
 `;
+
 const Buttons = styled.div`
   display: flex;
-  width: 10%;
-  justify-content: space-evenly;
+`;
+
+const WrapButtonMore = styled.div`
+  width: 50px;
 `;
 
 const ButtonMore = styled.div`
@@ -50,15 +56,15 @@ const Group = ({ groupData }) => {
   const [isRedactGroup, setIsRedactGroup] = useState(false);
   return (
     <GroupStyle>
-      <div className="w-10">
-          <ButtonMore
+      <WrapButtonMore>
+        <ButtonMore
           activeGroup={groupData.isActive}
           onClick={() => dispatch(setActiveGroup(groupData.id))}
         />
-      </div>
+      </WrapButtonMore>
 
       {isRedactGroup ? (
-        <InputGroup className="mb-3 w-50">
+        <InputGroup className=" w-75 ">
           <Form.Control
             type="text"
             defaultValue={groupData.groupName}
@@ -89,15 +95,17 @@ const Group = ({ groupData }) => {
         </InputGroup>
       ) : (
         <>
-          <h3 className="mb-3 ms-3 w-100"> {groupData.groupName} </h3>
+          <h3 className=" ms-3 "> {groupData.groupName} </h3>
           <Buttons>
             <Button
+              className=" mx-1"
               variant="warning"
               onClick={() => setIsRedactGroup(!isRedactGroup)}
             >
               Edit
             </Button>
             <Button
+              className=" mx-1"
               variant="danger"
               onClick={() => dispatch(deleteGroup(groupData.id))}
             >

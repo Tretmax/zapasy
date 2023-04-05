@@ -1,5 +1,6 @@
 import { Button, InputGroup } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { DonutChart } from "react-circle-chart";
 
 import styled from "styled-components";
 import { useState } from "react";
@@ -11,24 +12,66 @@ import {
 } from "../redux/sliceReserves";
 
 const ItemStyle = styled.div`
+  border: 1px solid black;
+  padding-left: 2%;
+  padding-right: 2%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  transition: all 0.3s;
+`;
+const NameArea = styled.div`
+  border: 1px solid blue;
+  width: 20%;
+  /* padding-left: 2%;
+padding-right: 2%;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: start;
+transition: all 0.3s; */
+`;
+
+const ContentArea = styled.div`
+  width: 40%;
+  border: 1px solid grey;
+  display: flex;
+  align-items: center;
+  /* padding-left: 2%;
+padding-right: 2%;
+width: 100%;
+display: flex;
+
+justify-content: start;
+transition: all 0.3s; */
+`;
+
+const ButtonsArea = styled.div`
+  border: 1px solid green;
+  width: 40%;
   display: flex;
   justify-content: space-between;
-  margin-left: 2%;
+  /* padding-left: 2%; */
+  align-items: center;
   transition: all 0.3s;
+  /* 
+padding-right: 2%;
+width: 100%;
+
+
+
+ */
 `;
 
 const Buttons = styled.div`
   display: flex;
-  width: 10%;
-  justify-content: space-evenly;
 `;
 
 const Status = styled.div`
-  width: 20px;
+  display: flex;
+
   height: 20px;
-  border-radius: 100%;
-  background-color: ${(props) =>
-    props.level < 50 ? "red" : props.level < 75 ? "yellow" : "green"};
 `;
 
 const Item = ({ itemData, groupId, activeTarget }) => {
@@ -41,60 +84,59 @@ const Item = ({ itemData, groupId, activeTarget }) => {
 
   return (
     <ItemStyle>
-      <p>{itemData.name}</p>
-      {activeTarget ? (
-        isTargetValueRedact ? (
-          <>
-            <InputGroup className="mb-3">
-              <Form.Control
-                type="number"
-                defaultValue={itemData.targetValue}
-                placeholder="Введіть цільове значення"
-                onChange={(e) => setInput(e.target.value)}
-                required
-              />
+      <NameArea>{itemData.name}</NameArea>
+      <ContentArea>
+        {activeTarget ? (
+          isTargetValueRedact ? (
+            <>
+              <InputGroup>
+                <Form.Control
+                  type="number"
+                  defaultValue={itemData.targetValue}
+                  placeholder="Введіть цільове значення"
+                  onChange={(e) => setInput(e.target.value)}
+                  required
+                />
+                <Button
+                  variant="outline-success"
+                  onClick={() => {
+                    dispatch(
+                      setTargetValue({
+                        newTargetValue: handlerInput,
+                        groupId: groupId,
+                        itemId: itemData.id,
+                      })
+                    );
+                    setTargetValueRedact(false);
+                  }}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  onClick={() => setTargetValueRedact(false)}
+                >
+                  Cancel
+                </Button>
+              </InputGroup>
+            </>
+          ) : (
+            <>
+              <p>{itemData.targetValue}</p>
               <Button
-                variant="outline-success"
-                onClick={() => {
-                  dispatch(
-                    setTargetValue({
-                      newTargetValue: handlerInput,
-                      groupId: groupId,
-                      itemId: itemData.id,
-                    })
-                  );
-                  setTargetValueRedact(false);
-                }}
+                className="mx-2"
+                variant="secondary"
+                onClick={() => setTargetValueRedact(true)}
               >
-                Save
+                Edit
               </Button>
-              <Button
-                variant="outline-danger"
-                onClick={() => setTargetValueRedact(false)}
-              >
-                Cancel
-              </Button>
-            </InputGroup>
-          </>
+            </>
+          )
         ) : (
-          <>
-            {" "}
-            <p>{itemData.targetValue}</p>
-            <Button
-              variant="secondary"
-              onClick={() => setTargetValueRedact(true)}
-            >
-              Edit
-            </Button>
-          </>
-        )
-      ) : (
-        ""
-      )}
-
-      <p>
+          ""
+        )}
         {isCurrentValueRedact ? (
-          <InputGroup className="mb-3">
+          <InputGroup>
             <Form.Control
               type="number"
               defaultValue={itemData.value}
@@ -128,30 +170,54 @@ const Item = ({ itemData, groupId, activeTarget }) => {
           itemData.value
         )}{" "}
         {itemData.etc}
-      </p>
-      <Status level={level}>{level}% </Status>
-      {isCurrentValueRedact ? (
-        ''
-      ) : (
-        <Buttons>
-          <Button variant="warning" onClick={() => setCurrentValueRedact(true)}>
-            Edit
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() =>
-              dispatch(
-                deleteItem({
-                  itemId: itemData.id,
-                  groupId: groupId,
-                })
-              )
-            }
-          >
-            Del
-          </Button>
-        </Buttons>
-      )}
+      </ContentArea>
+      <ButtonsArea>
+        <Status>
+          <DonutChart
+            items={[
+              {
+                value: level,
+                label: itemData.name,
+                color: level < 50 ? "red" : level < 75 ? "yellow" : "green",
+              },
+            ]}
+            trackColor="#dbe0ec"
+            size="20"
+            trackWidth="lg"
+            showTotal={false}
+            backgroundTooltipColor="none"
+            tooltipFontSize="0"
+          />
+          {level}%
+        </Status>
+        {isCurrentValueRedact ? (
+          ""
+        ) : (
+          <Buttons>
+            <Button
+              className="px-1"
+              variant="warning"
+              onClick={() => setCurrentValueRedact(true)}
+            >
+              Edit
+            </Button>
+            <Button
+              className=" ms-1 px-1"
+              variant="danger"
+              onClick={() =>
+                dispatch(
+                  deleteItem({
+                    itemId: itemData.id,
+                    groupId: groupId,
+                  })
+                )
+              }
+            >
+              Del
+            </Button>
+          </Buttons>
+        )}
+      </ButtonsArea>
     </ItemStyle>
   );
 };
