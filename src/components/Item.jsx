@@ -12,7 +12,6 @@ import {
 } from "../redux/sliceReserves";
 
 const ItemStyle = styled.div`
-  border: 1px solid black;
   padding-left: 2%;
   padding-right: 2%;
   width: 100%;
@@ -22,46 +21,33 @@ const ItemStyle = styled.div`
   transition: all 0.3s;
 `;
 const NameArea = styled.div`
-  border: 1px solid blue;
   width: 20%;
-  /* padding-left: 2%;
-padding-right: 2%;
-width: 100%;
-display: flex;
-align-items: center;
-justify-content: start;
-transition: all 0.3s; */
 `;
 
 const ContentArea = styled.div`
   width: 40%;
-  border: 1px solid grey;
+
   display: flex;
   align-items: center;
-  /* padding-left: 2%;
-padding-right: 2%;
-width: 100%;
-display: flex;
+`;
+const TargetArea = styled.div`
+  width: 50%;
+  display: flex;
+  align-items: center;
+`;
 
-justify-content: start;
-transition: all 0.3s; */
+const ValueArea = styled.div`
+  width: 50%;
+  display: flex;
+  align-items: center;
 `;
 
 const ButtonsArea = styled.div`
-  border: 1px solid green;
   width: 40%;
   display: flex;
   justify-content: space-between;
-  /* padding-left: 2%; */
   align-items: center;
   transition: all 0.3s;
-  /* 
-padding-right: 2%;
-width: 100%;
-
-
-
- */
 `;
 
 const Buttons = styled.div`
@@ -70,7 +56,6 @@ const Buttons = styled.div`
 
 const Status = styled.div`
   display: flex;
-
   height: 20px;
 `;
 
@@ -87,89 +72,98 @@ const Item = ({ itemData, groupId, activeTarget }) => {
       <NameArea>{itemData.name}</NameArea>
       <ContentArea>
         {activeTarget ? (
-          isTargetValueRedact ? (
-            <>
-              <InputGroup>
-                <Form.Control
-                  type="number"
-                  defaultValue={itemData.targetValue}
-                  placeholder="Введіть цільове значення"
-                  onChange={(e) => setInput(e.target.value)}
-                  required
-                />
+          <TargetArea>
+            {isTargetValueRedact ? (
+              <>
+                <InputGroup size="sm">
+                  <Form.Control
+                    type="number"
+                    defaultValue={itemData.targetValue}
+                    placeholder="Введіть цільове значення"
+                    onChange={(e) => setInput(e.target.value)}
+                    required
+                  />
+                  <Button
+                    variant="outline-success"
+                    className="px-1"
+                    onClick={() => {
+                      dispatch(
+                        setTargetValue({
+                          newTargetValue: handlerInput,
+                          groupId: groupId,
+                          itemId: itemData.id,
+                        })
+                      );
+                      setTargetValueRedact(false);
+                    }}
+                  >
+                    &#10004;
+                  </Button>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => setTargetValueRedact(false)}
+                    className="px-1"
+                  >
+                    ✘
+                  </Button>
+                </InputGroup>
+              </>
+            ) : (
+              <>
+                <p>{itemData.targetValue}</p>
                 <Button
-                  variant="outline-success"
-                  onClick={() => {
-                    dispatch(
-                      setTargetValue({
-                        newTargetValue: handlerInput,
-                        groupId: groupId,
-                        itemId: itemData.id,
-                      })
-                    );
-                    setTargetValueRedact(false);
-                  }}
+                  className="mx-2 px-1"
+                  variant="secondary"
+                  onClick={() => setTargetValueRedact(true)}
                 >
-                  Save
+                  ⚙
                 </Button>
-                <Button
-                  variant="outline-danger"
-                  onClick={() => setTargetValueRedact(false)}
-                >
-                  Cancel
-                </Button>
-              </InputGroup>
-            </>
-          ) : (
-            <>
-              <p>{itemData.targetValue}</p>
-              <Button
-                className="mx-2"
-                variant="secondary"
-                onClick={() => setTargetValueRedact(true)}
-              >
-                Edit
-              </Button>
-            </>
-          )
+              </>
+            )}
+          </TargetArea>
         ) : (
           ""
         )}
-        {isCurrentValueRedact ? (
-          <InputGroup>
-            <Form.Control
-              type="number"
-              defaultValue={itemData.value}
-              placeholder="Введіть поточне значення"
-              onChange={(e) => setInput(e.target.value)}
-              required
-            />
-            <Button
-              variant="outline-success"
-              onClick={() => {
-                dispatch(
-                  setCurrentValue({
-                    newValue: handlerInput,
-                    groupId: groupId,
-                    itemId: itemData.id,
-                  })
-                );
-                setCurrentValueRedact(false);
-              }}
-            >
-              Save
-            </Button>
-            <Button
-              variant="outline-danger"
-              onClick={() => setCurrentValueRedact(false)}
-            >
-              Cancel
-            </Button>
-          </InputGroup>
-        ) : (
-          itemData.value
-        )}{" "}
-        {itemData.etc}
+
+        <ValueArea>
+          {isCurrentValueRedact ? (
+            <InputGroup size="sm">
+              <Form.Control
+                type="number"
+                defaultValue={itemData.value}
+                placeholder="Введіть поточне значення"
+                onChange={(e) => setInput(e.target.value)}
+                required
+              />
+              <Button
+                variant="outline-success"
+                className="px-1"
+                onClick={() => {
+                  dispatch(
+                    setCurrentValue({
+                      newValue: handlerInput,
+                      groupId: groupId,
+                      itemId: itemData.id,
+                    })
+                  );
+                  setCurrentValueRedact(false);
+                }}
+              >
+                ✔
+              </Button>
+              <Button
+                variant="outline-danger"
+                className="px-1"
+                onClick={() => setCurrentValueRedact(false)}
+              >
+                ✘
+              </Button>
+            </InputGroup>
+          ) : (
+            itemData.value
+          )}{" "}
+          {itemData.etc}
+        </ValueArea>
       </ContentArea>
       <ButtonsArea>
         <Status>

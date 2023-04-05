@@ -11,6 +11,7 @@ import ModalWindow from "../components/modal";
 import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { addBuyList } from "../redux/sliceTodo";
+import ItemTitle from "../components/ItemTitle";
 
 const Wrap = styled.div`
   width: 96%;
@@ -27,6 +28,7 @@ const ButtonPanel = styled.div`
 
 const Reserves = () => {
   const [activeTarget, setActiveTarget] = useState(false);
+
   const buttonTarget = () => {
     setActiveTarget(!activeTarget);
   };
@@ -154,6 +156,7 @@ const Reserves = () => {
 
             {item.isActive ? (
               <div>
+                <ItemTitle activeTarget={activeTarget} />
                 {item.items.map((el) => {
                   return (
                     <Item

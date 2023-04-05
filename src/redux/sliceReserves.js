@@ -87,7 +87,7 @@ const reservSlice = createSlice({
         state.data.forEach((group) => {
           group.items.map((item) => {
             if (item.id === +key) {
-              item.value = item.value + action.payload[key];
+              item.value = +item.value + +action.payload[key];
             }
           });
         });
