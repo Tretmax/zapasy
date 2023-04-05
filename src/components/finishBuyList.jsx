@@ -12,6 +12,7 @@ const FinishBuyList = () => {
   const onSubmitFinishBuyForm = (data) => {
     dispatch(finishBuy(data));
     reset();
+ 
   };
 
   return (
@@ -28,7 +29,6 @@ const FinishBuyList = () => {
                   {...register(`${item.itemId}`)}
                   required
                 />
-          
               </>
             );
           }

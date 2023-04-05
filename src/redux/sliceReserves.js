@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { data } from "../mocks/data";
 
 const reservSlice = createSlice({
   name: "reserves",
   initialState: {
-    data: data,
+    data: [],
   },
   reducers: {
     addGroup(state, action) {

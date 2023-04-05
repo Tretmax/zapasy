@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { todo } from "../mocks/data";
 
 const todoSlice = createSlice({
   name: "todo",
   initialState: {
-    data: todo,
+    data: [],
   },
   reducers: {
     addBuyList(state, action) {

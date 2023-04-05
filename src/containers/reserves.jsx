@@ -36,9 +36,13 @@ const Reserves = () => {
   const dispatch = useDispatch();
 
   const { register, handleSubmit, reset } = useForm();
+
+
+
   const onSubmitGroupForm = (data) => {
     dispatch(addGroup(data.groupName));
     reset();
+  
   };
   const createBuyingList = (data) => {
     const limit = 50;
