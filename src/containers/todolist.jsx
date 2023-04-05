@@ -8,6 +8,20 @@ import { Form } from "react-bootstrap";
 
 const Todos = styled.div`
   display: flex;
+  margin-bottom: 5px;
+  ${(props) =>
+    !props.active ? "" : "text-decoration:line-through; color:grey"};
+`;
+
+const ItemArea = styled.div`
+  display: flex;
+  width: 100%; ;
+`;
+const ItemName = styled.div`
+  width: 50%;
+`;
+const ItemData = styled.div`
+  width: 20%;
 `;
 
 const Todolist = () => {
@@ -18,9 +32,9 @@ const Todolist = () => {
     <div>
       {buyingList.map((item) => {
         return (
-          <Todos key={item.id}>
-            <Form.Check 
-              
+          <Todos key={item.id} active={item.isCheck}>
+            <Form.Check
+              className="mx-3"
               checked={item.isCheck}
               onChange={() => {
                 dispatch(
@@ -28,9 +42,12 @@ const Todolist = () => {
                 );
               }}
             />
-            <p>
-              {item.name} {item.value} {item.etc}
-            </p>
+            <ItemArea>
+              <ItemName>{item.name}</ItemName>
+              <ItemData>
+                {item.value} {item.etc}
+              </ItemData>
+            </ItemArea>
           </Todos>
         );
       })}

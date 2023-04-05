@@ -24,11 +24,11 @@ const FinishBuyList = () => {
                 <Form.Label className="mt-3">{item.name}</Form.Label>
                 <Form.Control
                   type="number"
-                  placeholder={item.groupName}
+                  placeholder={item.etc}
                   {...register(`${item.itemId}`)}
                   required
                 />
-                <p>{item.etc}</p>
+          
               </>
             );
           }
